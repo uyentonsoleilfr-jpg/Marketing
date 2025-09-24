@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giáo Trình Content Marketing Tương Tác: AIDA, PAS, 4C</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Beige & Sage Green -->
+    <!-- Application Structure Plan: A single-page scrolling application with a sticky top navigation for quick access to sections (AIDA, PAS, 4C, Comparison, Practice). This structure transforms the linear document into a flexible learning tool. Key interactions include dynamic example filtering by industry and interactive checklists/practice areas to actively engage the user in the learning process, making it more effective than passive reading. -->
+    <!-- Visualization & Content Choices: Report Info: AIDA/PAS/4C definitions, examples, checklists, comparison. Goal: Educate & Engage. Viz/Presentation: Interactive cards, dynamic text blocks via JS, interactive HTML checklists, and a single Chart.js bar chart to visually compare the conversion impact of AIDA vs. PAS. Interaction: Users select industry to see tailored examples, check off list items, and type in practice text areas. Justification: These choices make the content digestible, personalized, and hands-on. Library/Method: Vanilla JS, Tailwind CSS, Chart.js (Canvas). CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+            background-color: #FDFBF8;
+            color: #3D405B;
+        }
+        .nav-link {
+            transition: all 0.3s ease;
+            position: relative;
+            padding-bottom: 4px;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #81B29A;
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after, .nav-link.active::after {
+            width: 100%;
+        }
+        .card {
+            background-color: #FFFFFF;
+            border: 1px solid #F4F1DE;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.05), 0 4px 6px -2px rgba(0,0,0,0.05);
+        }
+        .btn-primary {
+            background-color: #81B29A;
+            color: #FFFFFF;
+            transition: background-color 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #6a947d;
+        }
+        .section-title::before {
+            content: '✓';
+            color: #81B29A;
+            margin-right: 0.75rem;
+            font-weight: 700;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm border-b border-stone-200">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <h1 class="text-xl font-bold text-stone-700">Giáo Trình Content</h1>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#aida" class="nav-link text-stone-600 hover:text-stone-900 px-3 py-2 rounded-md text-sm font-medium">💡 AIDA</a>
+                        <a href="#pas" class="nav-link text-stone-600 hover:text-stone-900 px-3 py-2 rounded-md text-sm font-medium">🎯 PAS</a>
+                        <a href="#4c" class="nav-link text-stone-600 hover:text-stone-900 px-3 py-2 rounded-md text-sm font-medium">✍️ 4C</a>
+                        <a href="#compare" class="nav-link text-stone-600 hover:text-stone-900 px-3 py-2 rounded-md text-sm font-medium">📊 So Sánh</a>
+                        <a href="#practice" class="nav-link text-stone-600 hover:text-stone-900 px-3 py-2 rounded-md text-sm font-medium">📝 Thực Hành</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <section class="text-center mb-20">
+            <h1 class="text-4xl md:text-5xl font-bold tracking-tight text-stone-800">GIÁO TRÌNH CONTENT MARKETING CHUYÊN SÂU</h1>
+            <p class="mt-4 max-w-3xl mx-auto text-lg text-stone-600">Nắm Vững & Vận Dụng Sáng Tạo Nguyên Tắc AIDA, PAS, 4C</p>
+        </section>
+
+        <!-- AIDA Section -->
+        <section id="aida" class="mb-20 scroll-mt-20">
+            <h2 class="text-3xl font-bold mb-8 section-title">CÔNG THỨC AIDA - NỀN TẢNG CỦA HÀNH TRÌNH KHÁCH HÀNG</h2>
+            <p class="text-stone-600 mb-10">AIDA là mô hình cổ điển nhất nhưng vẫn giữ nguyên giá trị, mô tả 4 giai đoạn nhận thức mà một người trải qua trước khi quyết định mua hàng.</p>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
+                <div class="card p-6 rounded-lg text-center">
+                    <div class="text-4xl mb-3">📢</div><h3 class="text-xl font-bold mb-2">(A) Attention</h3><p>Thu hút sự chú ý của khách hàng giữa hàng ngàn thông tin.</p>
+                </div>
+                <div class="card p-6 rounded-lg text-center">
+                    <div class="text-4xl mb-3">💡</div><h3 class="text-xl font-bold mb-2">(I) Interest</h3><p>Tạo sự thích thú bằng thông tin hữu ích, liên quan.</p>
+                </div>
+                <div class="card p-6 rounded-lg text-center">
+                    <div class="text-4xl mb-3">💖</div><h3 class="text-xl font-bold mb-2">(D) Desire</h3><p>Thổi bùng khao khát sở hữu sản phẩm/dịch vụ.</p>
+                </div>
+                <div class="card p-6 rounded-lg text-center">
+                    <div class="text-4xl mb-3">🛒</div><h3 class="text-xl font-bold mb-2">(A) Action</h3><p>Kêu gọi hành động cụ thể: mua hàng, đăng ký...</p>
+                </div>
+            </div>
+            <div class="card p-8 rounded-lg">
+                <h3 class="text-2xl font-bold mb-4">Ứng dụng & Ví dụ minh họa</h3>
+                <div class="mb-6">
+                    <label for="aida-industry" class="block text-sm font-medium text-stone-700 mb-2">Chọn ngành hàng để xem ví dụ:</label>
+                    <select id="aida-industry" class="w-full max-w-xs p-2 border border-stone-300 rounded-md shadow-sm focus:ring-[#81B29A] focus:border-[#81B29A]">
+                        <option value="cosmetics">Mỹ phẩm</option>
+                        <option value="fashion">Thời trang</option>
+                    </select>
+                </div>
+                <div id="aida-example-content" class="space-y-4 text-stone-700"></div>
+            </div>
+        </section>
+
+        <!-- PAS Section -->
+        <section id="pas" class="mb-20 scroll-mt-20">
+            <h2 class="text-3xl font-bold mb-8 section-title">CÔNG THỨC PAS - ĐÁNH THẲNG VÀO "NỖI ĐAU" KHÁCH HÀNG</h2>
+            <p class="text-stone-600 mb-10">PAS là công thức cực kỳ hiệu quả cho các sản phẩm/dịch vụ mang tính giải quyết vấn đề. Nó tạo ra sự đồng cảm sâu sắc và định vị thương hiệu như một "vị cứu tinh".</p>
+             <div class="grid md:grid-cols-3 gap-8 mb-10">
+                <div class="card p-6 rounded-lg text-center">
+                    <div class="text-4xl mb-3">😥</div><h3 class="text-xl font-bold mb-2">(P) Problem</h3><p>Trình bày vấn đề khách hàng đang gặp phải.</p>
+                </div>
+                <div class="card p-6 rounded-lg text-center">
+                    <div class="text-4xl mb-3">🔥</div><h3 class="text-xl font-bold mb-2">(A) Agitate</h3><p>Xoáy sâu, khuấy động làm vấn đề trở nên nghiêm trọng hơn.</p>
+                </div>
+                <div class="card p-6 rounded-lg text-center">
+                    <div class="text-4xl mb-3">💡</div><h3 class="text-xl font-bold mb-2">(S) Solution</h3><p>Đưa ra sản phẩm như một giải pháp hoàn hảo.</p>
+                </div>
+            </div>
+            <div class="card p-8 rounded-lg">
+                <h3 class="text-2xl font-bold mb-4">Ứng dụng & Ví dụ minh họa</h3>
+                <div class="mb-6">
+                    <label for="pas-industry" class="block text-sm font-medium text-stone-700 mb-2">Chọn ngành hàng để xem ví dụ:</label>
+                    <select id="pas-industry" class="w-full max-w-xs p-2 border border-stone-300 rounded-md shadow-sm focus:ring-[#81B29A] focus:border-[#81B29A]">
+                        <option value="supplement">Thực phẩm chức năng</option>
+                        <option value="course">Khóa học Online</option>
+                        <option value="real_estate">Bất động sản</option>
+                    </select>
+                </div>
+                <div id="pas-example-content" class="space-y-4 text-stone-700"></div>
+            </div>
+        </section>
+
+        <!-- 4C Section -->
+        <section id="4c" class="mb-20 scroll-mt-20">
+            <h2 class="text-3xl font-bold mb-8 section-title">CÔNG THỨC 4C - "BỘ LỌC" ĐẢM BẢO CHẤT LƯỢNG NỘI DUNG</h2>
+            <p class="text-stone-600 mb-10">Nếu AIDA và PAS là công thức để xây dựng sườn bài, thì 4C là bộ tiêu chuẩn để đo lường chất lượng của từng câu chữ bạn viết ra. Nó giúp đảm bảo thông điệp được truyền tải hiệu quả nhất.</p>
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
+                <div class="card p-6 rounded-lg"><h3 class="text-xl font-bold mb-2">Clear (Rõ ràng)</h3><p>Thông điệp dễ hiểu, không gây hiểu lầm.</p></div>
+                <div class="card p-6 rounded-lg"><h3 class="text-xl font-bold mb-2">Concise (Súc tích)</h3><p>Đi thẳng vào vấn đề, không thừa thãi.</p></div>
+                <div class="card p-6 rounded-lg"><h3 class="text-xl font-bold mb-2">Compelling (Thuyết phục)</h3><p>Hấp dẫn, lôi cuốn, tạo cảm xúc.</p></div>
+                <div class="card p-6 rounded-lg"><h3 class="text-xl font-bold mb-2">Credible (Đáng tin cậy)</h3><p>Có số liệu, bằng chứng xác thực.</p></div>
+            </div>
+            <div class="card p-8 rounded-lg">
+                <h3 class="text-2xl font-bold mb-4">Ví dụ: Mô tả áo sơ mi lụa</h3>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h4 class="font-semibold text-red-600 mb-2">❌ Chưa đạt 4C:</h4>
+                        <p class="text-stone-600 bg-red-50 p-4 rounded-md border border-red-200">"Sản phẩm áo sơ mi này được làm từ một loại vật liệu rất tốt, nó sẽ làm cho người mặc cảm thấy cực kỳ dễ chịu và trông rất sang, là một item phải có trong tủ đồ của bất kỳ ai."</p>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-green-600 mb-2">✅ Áp dụng 4C:</h4>
+                        <div class="text-stone-700 bg-green-50 p-4 rounded-md border border-green-200">
+                           <p><strong>Rõ ràng & Súc tích:</strong> "Áo sơ mi lụa tơ tằm cao cấp."</p>
+                           <p><strong>Thuyết phục:</strong> "Chất lụa mềm mại tựa mây, khẽ lướt trên da mang lại cảm giác thư thái. Thiết kế tối giản tôn vinh nét đẹp thanh lịch."</p>
+                           <p><strong>Đáng tin cậy:</strong> "Dệt từ 100% lụa Bảo Lộc, may thủ công bởi nghệ nhân 20 năm kinh nghiệm."</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Compare Section -->
+        <section id="compare" class="mb-20 scroll-mt-20">
+            <h2 class="text-3xl font-bold mb-8 section-title">SO SÁNH AIDA, PAS, 4C - KHI NÀO DÙNG CÔNG THỨC NÀO?</h2>
+            <div class="overflow-x-auto card rounded-lg p-2">
+                <table class="w-full text-sm text-left text-stone-600">
+                    <thead class="text-xs text-stone-700 uppercase bg-stone-100">
+                        <tr>
+                            <th scope="col" class="px-6 py-3">Tiêu chí</th>
+                            <th scope="col" class="px-6 py-3">AIDA</th>
+                            <th scope="col" class="px-6 py-3">PAS</th>
+                            <th scope="col" class="px-6 py-3">4C</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="bg-white border-b"><th scope="row" class="px-6 py-4 font-medium text-stone-900 whitespace-nowrap">Mục tiêu chính</th><td class="px-6 py-4">Dẫn dắt khách hàng qua hành trình nhận thức, phù hợp với phễu marketing.</td><td class="px-6 py-4">Thúc đẩy hành động ngay lập tức bằng cách giải quyết vấn đề.</td><td class="px-6 py-4">Kiểm tra và đảm bảo chất lượng, sự hiệu quả của thông điệp.</td></tr>
+                        <tr class="bg-stone-50 border-b"><th scope="row" class="px-6 py-4 font-medium text-stone-900 whitespace-nowrap">Điểm mạnh</th><td class="px-6 py-4">Cấu trúc toàn diện, linh hoạt.</td><td class="px-6 py-4">Tác động tâm lý mạnh, tỷ lệ chuyển đổi cao.</td><td class="px-6 py-4">Giúp nội dung chuyên nghiệp, đáng tin cậy.</td></tr>
+                        <tr class="bg-white border-b"><th scope="row" class="px-6 py-4 font-medium text-stone-900 whitespace-nowrap">Điểm yếu</th><td class="px-6 py-4">Có thể dài dòng, cần sự sáng tạo.</td><td class="px-6 py-4">Dễ gây cảm giác tiêu cực nếu lạm dụng.</td><td class="px-6 py-4">Không phải công thức viết, mà là nguyên tắc rà soát.</td></tr>
+                        <tr class="bg-stone-50"><th scope="row" class="px-6 py-4 font-medium text-stone-900 whitespace-nowrap">Tình huống áp dụng</th><td class="px-6 py-4">Bài PR, giới thiệu sản phẩm mới, Email Marketing.</td><td class="px-6 py-4">Landing page, quảng cáo bán hàng, bài viết giải quyết vấn đề cụ thể.</td><td class="px-6 py-4">Áp dụng cho **MỌI** loại content sau khi đã viết xong.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="mt-10">
+                 <h3 class="text-2xl font-bold mb-4 text-center">So sánh hiệu quả tác động (minh họa)</h3>
+                <div class="chart-container">
+                    <canvas id="comparisonChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Practice Section -->
+        <section id="practice" class="scroll-mt-20">
+            <h2 class="text-3xl font-bold mb-8 section-title">BÀI TẬP THỰC HÀNH</h2>
+            <div class="space-y-12">
+                <div class="card p-8 rounded-lg">
+                    <h3 class="text-xl font-bold mb-4">Bài tập 1: Viết content theo AIDA</h3>
+                    <p class="mb-2"><strong>Sản phẩm:</strong> Một loại kem chống nắng mới, nâng tông tự nhiên, không bết dính.</p>
+                    <p class="mb-4"><strong>Yêu cầu:</strong> Viết bài đăng Facebook hoàn chỉnh áp dụng đủ 4 bước.</p>
+                    <textarea class="w-full h-48 p-3 border border-stone-300 rounded-md" placeholder="Viết bài của bạn ở đây..."></textarea>
+                </div>
+                <div class="card p-8 rounded-lg">
+                    <h3 class="text-xl font-bold mb-4">Bài tập 2: Viết content theo PAS</h3>
+                    <p class="mb-2"><strong>Sản phẩm:</strong> Khóa học online "Quản lý tài chính cá nhân cho người mới bắt đầu".</p>
+                    <p class="mb-4"><strong>Yêu cầu:</strong> Viết email marketing ngắn (khoảng 150 từ) theo công thức PAS.</p>
+                    <textarea class="w-full h-48 p-3 border border-stone-300 rounded-md" placeholder="Viết bài của bạn ở đây..."></textarea>
+                </div>
+                <div class="card p-8 rounded-lg bg-amber-50 border-amber-200">
+                    <h3 class="text-xl font-bold mb-4">Bài tập 3: Tự đánh giá bằng 4C</h3>
+                    <p class="mb-4">Chọn một trong hai bài viết trên, sử dụng checklist 4C để tự đánh giá và tinh chỉnh lại nội dung.</p>
+                    <div class="space-y-2">
+                        <label class="flex items-center"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-[#81B29A] focus:ring-[#81B29A] mr-2">Nội dung đã RÕ RÀNG chưa?</label>
+                        <label class="flex items-center"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-[#81B29A] focus:ring-[#81B29A] mr-2">Nội dung đã SÚC TÍCH chưa?</label>
+                        <label class="flex items-center"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-[#81B29A] focus:ring-[#81B29A] mr-2">Nội dung đã THUYẾT PHỤC chưa?</label>
+                        <label class="flex items-center"><input type="checkbox" class="h-4 w-4 rounded border-gray-300 text-[#81B29A] focus:ring-[#81B29A] mr-2">Nội dung đã ĐÁNG TIN CẬY chưa?</label>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-stone-800 text-white mt-20">
+        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 text-center">
+            <p>&copy; 2025 Giáo trình Content Marketing Tương Tác.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const exampleData = {
+                aida: {
+                    cosmetics: `
+                        <p><strong>Attention:</strong> "Màu Son Mới Nhất 2025: Đẹp Tới Mức 'Nín Thở'!"</p>
+                        <p><strong>Interest:</strong> "Không chỉ lên màu chuẩn, son còn chứa tinh chất bơ hạt mỡ giúp dưỡng ẩm môi suốt 8 giờ. Bảng màu gồm 5 sắc thái thời thượng, phù hợp với mọi tông da châu Á."</p>
+                        <p><strong>Desire:</strong> "Tưởng tượng bạn xuất hiện trong buổi tiệc cuối năm với đôi môi căng mọng, thu hút mọi ánh nhìn. Xem ngay feedback từ các beauty blogger hàng đầu!"</p>
+                        <p><strong>Action:</strong> "👉 <strong>MUA NGAY</strong> để nhận ưu đãi giảm 20% chỉ trong hôm nay! Số lượng có hạn."</p>
+                    `,
+                    fashion: `
+                        <p><strong>Attention:</strong> "BST Váy Hè 2025: Gió Mát Lành Cho Ngày Nắng Oi Ả."</p>
+                        <p><strong>Interest:</strong> "Sử dụng chất liệu linen thoáng khí, thấm hút mồ hôi vượt trội. Thiết kế phom dáng suông rộng, che khuyết điểm hoàn hảo mà vẫn tôn lên nét nữ tính."</p>
+                        <p><strong>Desire:</strong> "Cảm nhận sự tự do, thoải mái trong từng chuyển động. Dù đi dạo phố hay du lịch biển, bạn sẽ luôn là tâm điểm của sự thanh lịch và tinh tế."</p>
+                        <p><strong>Action:</strong> "Khám phá ngay bộ sưu tập và chọn cho mình chiếc váy ưng ý nhất! FREESHIP cho 100 đơn hàng đầu tiên."</p>
+                    `
+                },
+                pas: {
+                    supplement: `
+                        <p><strong>Problem:</strong> "Bạn đã thử mọi cách giảm cân nhưng vẫn thất bại? Mỡ bụng cứng đầu vẫn đeo bám dai dẳng khiến bạn mất tự tin?"</p>
+                        <p><strong>Agitate:</strong> "Mỗi lần đứng trước tủ quần áo lại thở dài vì không mặc vừa chiếc váy yêu thích. Ngại ngùng trong những buổi họp mặt bạn bè, bỏ lỡ những chuyến đi biển chỉ vì thân hình quá khổ."</p>
+                        <p><strong>Solution:</strong> "Đã đến lúc chấm dứt chuỗi ngày đó! Với viên uống [Tên sản phẩm], giúp đốt cháy mỡ thừa từ bên trong mà không cần ăn kiêng kham khổ. Lấy lại vóc dáng thon gọn chỉ sau 30 ngày!"</p>
+                    `,
+                    course: `
+                         <p><strong>Problem:</strong> "Lương tháng nào cũng hết sạch tháng đó? Bạn muốn tiết kiệm nhưng không biết bắt đầu từ đâu và luôn cảm thấy lo lắng về tương lai tài chính?"</p>
+                         <p><strong>Agitate:</strong> "Những khoản nợ thẻ tín dụng ngày càng chồng chất. Những dự định lớn như mua nhà, mua xe cứ mãi xa vời. Cảm giác bất an, không kiểm soát được đồng tiền của chính mình thật sự rất mệt mỏi."</p>
+                         <p><strong>Solution:</strong> "Hãy để chúng tôi giúp bạn! Khóa học 'Quản lý tài chính cá nhân cho người mới bắt đầu' sẽ cung cấp cho bạn lộ trình từng bước, đơn giản và dễ áp dụng để bạn làm chủ tài chính, xây dựng nền tảng vững chắc cho tương lai."</p>
+                    `,
+                    real_estate: `
+                        <p><strong>Problem:</strong> "Tìm kiếm một mái nhà ưng ý giữa hàng ngàn dự án thật sự quá mệt mỏi? Bạn loay hoay với các vấn đề pháp lý, giá cả không minh bạch và thông tin nhiễu loạn?"</p>
+                        <p><strong>Agitate:</strong> "Bạn đã tốn hàng tháng trời đi xem nhà nhưng vẫn chưa tìm được nơi phù hợp. Mỗi lần đặt cọc là một lần lo lắng về rủi ro, sợ mất trắng số tiền tích cóp cả đời. Cơ hội sở hữu nhà với giá tốt cứ thế trôi qua."</p>
+                        <p><strong>Solution:</strong> "An cư không còn là cuộc chiến! Tại [Tên dự án/Công ty], chúng tôi cam kết pháp lý minh bạch, bảng giá niêm yết và đội ngũ tư vấn chuyên nghiệp đồng hành cùng bạn. Sở hữu ngay căn hộ mơ ước với chính sách thanh toán linh hoạt chỉ từ [Số tiền]!"</p>
+                    `
+                }
+            };
+
+            const aidaSelect = document.getElementById('aida-industry');
+            const aidaContent = document.getElementById('aida-example-content');
+            const pasSelect = document.getElementById('pas-industry');
+            const pasContent = document.getElementById('pas-example-content');
+
+            function updateContent(selectElement, contentElement, formula) {
+                const selectedValue = selectElement.value;
+                contentElement.innerHTML = exampleData[formula][selectedValue];
+            }
+
+            aidaSelect.addEventListener('change', () => updateContent(aidaSelect, aidaContent, 'aida'));
+            pasSelect.addEventListener('change', () => updateContent(pasSelect, pasContent, 'pas'));
+            
+            updateContent(aidaSelect, aidaContent, 'aida');
+            updateContent(pasSelect, pasContent, 'pas');
+
+            const ctx = document.getElementById('comparisonChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Mức độ Phủ sóng', 'Tác động Chuyển đổi Trực tiếp', 'Tính Linh hoạt'],
+                    datasets: [{
+                        label: 'AIDA',
+                        data: [9, 6, 8],
+                        backgroundColor: 'rgba(228, 149, 163, 0.6)',
+                        borderColor: 'rgba(228, 149, 163, 1)',
+                        borderWidth: 1
+                    }, {
+                        label: 'PAS',
+                        data: [6, 9, 5],
+                        backgroundColor: 'rgba(129, 178, 154, 0.6)',
+                        borderColor: 'rgba(129, 178, 154, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: { beginAtZero: true, max: 10, title: { display: true, text: 'Điểm đánh giá (thang 10)' } }
+                    },
+                    plugins: {
+                        title: { display: true, text: 'So sánh mức độ hiệu quả giữa AIDA và PAS', font: { size: 16 } },
+                        tooltip: { mode: 'index', intersect: false }
+                    }
+                }
+            });
+
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('active');
+                            }
+                        });
+                    }
+                });
+            }, { rootMargin: '-50% 0px -50% 0px' });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        });
+    </script>
+
+</body>
+</html>
+
